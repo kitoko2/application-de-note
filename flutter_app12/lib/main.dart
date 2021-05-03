@@ -234,15 +234,16 @@ class _MyHommeState extends State<MyHomme> {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 40,
+                ),
                 child: Center(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextFormField(
                         decoration: InputDecoration(
                           hintText: "titre de la note",
-                          // border: OutlineInputBorder(),
                         ),
                         onChanged: (e) {
                           setState(() {
@@ -253,7 +254,6 @@ class _MyHommeState extends State<MyHomme> {
                       TextFormField(
                         decoration: InputDecoration(
                           hintText: "entrer la note",
-                          // border: OutlineInputBorder(),
                         ),
                         onChanged: (n) {
                           setState(() {
@@ -264,7 +264,6 @@ class _MyHommeState extends State<MyHomme> {
                       TextFormField(
                         decoration: InputDecoration(
                           hintText: "nom de l'auteur",
-                          // border: OutlineInputBorder(),
                         ),
                         onChanged: (n) {
                           setState(() {
@@ -295,9 +294,6 @@ class _MyHommeState extends State<MyHomme> {
                                   0,
                                 ),
                               );
-                              // mesNotes.add(
-                              //  minicount(...)
-                              // );
                             }
                           });
                         },
