@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
+import 'package:flutter/rendering.dart';
 import "dart:math";
-
 import 'package:flutter_app12/notesDatabase.dart';
 
 void main(List<String> args) {
@@ -33,31 +33,9 @@ List colora = [
 List colorb = [
   Colors.red,
   Colors.green,
-  Colors.blue,
 ];
 
 class _MyHommeState extends State<MyHomme> {
-  var gv = 1;
-  List<Radio> f() {
-    List<Widget> l = [];
-    for (var i = 0; i < 2; i++) {
-      Row row = Row(
-        children: [
-          Radio(
-              value: i,
-              groupValue: gv,
-              onChanged: (e) {
-                setState(() {
-                  gv = e;
-                });
-              })
-        ],
-      );
-      l.add(row);
-    }
-    return l;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,6 +81,7 @@ class _MyHommeState extends State<MyHomme> {
                   if (snapshot.hasData) {
                     List mesNotes = snapshot.data;
                     return Scrollbar(
+                      radius: Radius.circular(30),
                       //juste pour la scrollbar
                       child: GridView.builder(
                         itemCount: mesNotes.length,
@@ -138,11 +117,31 @@ class _MyHommeState extends State<MyHomme> {
                                           top: Radius.circular(10),
                                         ),
                                       ),
-                                      child: Center(
-                                        child: Text(
-                                          mesNotes[i].titre.toUpperCase(),
-                                          style: TextStyle(color: Colors.white),
-                                        ),
+                                      child: Row(
+                                        children: [
+                                          PopupMenuButton(
+                                            itemBuilder: (context) {
+                                              return [
+                                                PopupMenuItem(
+                                                  child: Text("supprimer"),
+                                                ),
+                                                PopupMenuItem(
+                                                  child: Text(
+                                                      mesNotes[i].isFa == 1
+                                                          ? "désépinglé"
+                                                          : "épingler"),
+                                                ),
+                                              ];
+                                            },
+                                          ), //a terminer
+                                          Center(
+                                            child: Text(
+                                              mesNotes[i].titre.toUpperCase(),
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                     SizedBox(height: 8),
@@ -211,100 +210,113 @@ class _MyHommeState extends State<MyHomme> {
         backgroundColor: Theme.of(context).primaryColor,
         child: Icon(Icons.add),
         onPressed: () {
-          String titre;
-          String note;
-          String name;
-
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return SimpleDialog(
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
-                ),
-                children: [
-                  TextFormField(
-                    decoration: InputDecoration(
-                      hintText: "titre de la note",
-                      // border: OutlineInputBorder(),
-                    ),
-                    onChanged: (e) {
-                      setState(() {
-                        titre = e;
-                      });
-                    },
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      hintText: "entrer la note",
-                      // border: OutlineInputBorder(),
-                    ),
-                    onChanged: (n) {
-                      setState(() {
-                        note = n;
-                      });
-                    },
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      hintText: "nom de l'auteur",
-                      // border: OutlineInputBorder(),
-                    ),
-                    onChanged: (n) {
-                      setState(() {
-                        name = n;
-                      });
-                    },
-                  ),
-                  SizedBox(height: 10),
-                  Column(
-                    children: f(),
-                  ),
-                  Text("$gv"),
-                  FloatingActionButton(
-                    onPressed: () {
-                      print("$gv");
-                      print("$titre $note $name");
-                      Navigator.pop(context);
-                      setState(() {
-                        if (titre != null && note != null && name != null) {
-                          //pour un ajout dans la table note de la bd
-                          NotesDataBase.instance.insertNote(
-                            MiniCont(
-                                titre,
-                                note,
-                                name,
-                                datetoday().day,
-                                datetoday().month,
-                                datetoday().year,
-                                datetoday().hour,
-                                datetoday().minute,
-                                0),
-                          );
-                          // mesNotes.add(
-                          //  minicount(...)
-                          // );
-                        }
-                      });
-                    },
-                    child: Icon(Icons.check_circle_outline_sharp),
-                  ),
-                  Center(child: Text("valider")),
-                ],
-              );
-            },
-          );
+          setState(() {
+            popupNote(
+              MiniCont('', '', '', 0, 0, 0, 0, 0, 0),
+            );
+          });
         },
       ),
     );
   }
 
+  popupNote(MiniCont m) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: Container(
+            height: 400,
+            width: MediaQuery.of(context).size.width - 20,
+            child: Card(
+              // color: Color.fromRGBO(12, 34, 78, 0.3),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextFormField(
+                        decoration: InputDecoration(
+                          hintText: "titre de la note",
+                          // border: OutlineInputBorder(),
+                        ),
+                        onChanged: (e) {
+                          setState(() {
+                            m.titre = e;
+                          });
+                        },
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          hintText: "entrer la note",
+                          // border: OutlineInputBorder(),
+                        ),
+                        onChanged: (n) {
+                          setState(() {
+                            m.note = n;
+                          });
+                        },
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          hintText: "nom de l'auteur",
+                          // border: OutlineInputBorder(),
+                        ),
+                        onChanged: (n) {
+                          setState(() {
+                            m.name = n;
+                          });
+                        },
+                      ),
+                      SizedBox(height: 10),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          // print("${m.titre} ${m.note} ${m.name}");
+                          Navigator.pop(context);
+                          setState(() {
+                            if (m.titre != null &&
+                                m.note != null &&
+                                m.name != null) {
+                              //pour un ajout dans la table note de la bd
+                              NotesDataBase.instance.insertNote(
+                                MiniCont(
+                                  m.titre,
+                                  m.note,
+                                  m.name,
+                                  datetoday().day,
+                                  datetoday().month,
+                                  datetoday().year,
+                                  datetoday().hour,
+                                  datetoday().minute,
+                                  0,
+                                ),
+                              );
+                              // mesNotes.add(
+                              //  minicount(...)
+                              // );
+                            }
+                          });
+                        },
+                        icon: Icon(Icons.check),
+                        label: Text("Valider"),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   DateTime datetoday() {
     DateTime t = DateTime.now();
-
-    print("${t.hour}:${t.minute}");
-    print("${t.day}/${t.month}/${t.year}");
     return t;
   }
 }
