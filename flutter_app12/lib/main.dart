@@ -86,7 +86,8 @@ class _MyHommeState extends State<MyHomme> {
                       child: GridView.builder(
                         itemCount: mesNotes.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
+                          crossAxisCount:
+                              MediaQuery.of(context).size.width >= 768 ? 4 : 2,
                           mainAxisSpacing: 15,
                           crossAxisSpacing: 20,
                         ),
@@ -120,20 +121,49 @@ class _MyHommeState extends State<MyHomme> {
                                       child: Row(
                                         children: [
                                           PopupMenuButton(
+                                            initialValue: 20,
                                             itemBuilder: (context) {
                                               return [
                                                 PopupMenuItem(
                                                   child: Text("supprimer"),
+                                                  value: 0,
                                                 ),
                                                 PopupMenuItem(
                                                   child: Text(
-                                                      mesNotes[i].isFa == 1
-                                                          ? "désépinglé"
-                                                          : "épingler"),
+                                                    mesNotes[i].isFa == 1
+                                                        ? "désépinglé"
+                                                        : "épingler",
+                                                  ),
+                                                  value: 1,
                                                 ),
                                               ];
                                             },
-                                          ), //a terminer
+                                            onSelected: (int value) {
+                                              if (value == 0) {
+                                                setState(() {
+                                                  NotesDataBase.instance
+                                                      .deleteNote(
+                                                    mesNotes[i]
+                                                        .titre
+                                                        .toUpperCase(),
+                                                  );
+                                                });
+                                              }
+                                              if (value == 1) {
+                                                setState(() {
+                                                  if (mesNotes[i].isFa == 1) {
+                                                    NotesDataBase.instance
+                                                        .updateNote(
+                                                            mesNotes[i], 1);
+                                                    print("ok");
+                                                  } else {
+                                                    print("no");
+                                                  }
+                                                });
+                                              }
+                                            },
+                                          ),
+                                          //a terminer
                                           Center(
                                             child: Text(
                                               mesNotes[i].titre.toUpperCase(),

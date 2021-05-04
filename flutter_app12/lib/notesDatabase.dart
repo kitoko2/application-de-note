@@ -40,13 +40,13 @@ class NotesDataBase {
     );
   }
 
-  updateNote(MiniCont miniCont) async {
+  updateNote(MiniCont miniCont, int isfa) async {
     final Database tdb = await database;
     await tdb.update(
       "note",
       miniCont.toMap(),
-      where: "titre=?",
-      whereArgs: [miniCont.titre],
+      where: "isfa=?",
+      whereArgs: [isfa],
     );
   }
 
