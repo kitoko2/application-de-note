@@ -40,13 +40,13 @@ class NotesDataBase {
     );
   }
 
-  updateNote(MiniCont miniCont, int isfa) async {
+  updateNote(MiniCont miniCont) async {
     final Database tdb = await database;
     await tdb.update(
       "note",
       miniCont.toMap(),
-      where: "isfa=?",
-      whereArgs: [isfa],
+      where: "titre=?",
+      whereArgs: [miniCont.titre],
     );
   }
 
@@ -68,12 +68,14 @@ class NotesDataBase {
         return MiniCont.fromMap(maps[index]);
       },
     );
-    if (mesnotes.isEmpty) {
-      for (MiniCont m in defaultNotes) {
-        insertNote(m);
-      }
-      mesnotes = defaultNotes;
-    }
+    /* if (mesnotes.isEmpty) {
+       for (MiniCont m in defaultNotes) {
+         insertNote(m);
+       }
+       mesnotes = defaultNotes;
+     }
+    ON ELEVE LE RETOUR OBLIGATOIRE(POUR NE PAS QUE LES ELEMENTS PAR DEFAULT REAPPARAISSE UNE FOIS SUPPRIMER)
+    */
     return mesnotes;
   }
 

@@ -150,14 +150,45 @@ class _MyHommeState extends State<MyHomme> {
                                                 });
                                               }
                                               if (value == 1) {
+                                                //désepingler ou épingler
                                                 setState(() {
                                                   if (mesNotes[i].isFa == 1) {
+                                                    mesNotes[i] = MiniCont(
+                                                      mesNotes[i].titre,
+                                                      mesNotes[i].note,
+                                                      mesNotes[i].name,
+                                                      mesNotes[i].j,
+                                                      mesNotes[i].m,
+                                                      mesNotes[i].y,
+                                                      mesNotes[i].heure,
+                                                      mesNotes[i].minute,
+                                                      0,
+                                                      //0 pour désépingler
+                                                    );
                                                     NotesDataBase.instance
                                                         .updateNote(
-                                                            mesNotes[i], 1);
-                                                    print("ok");
+                                                      mesNotes[i],
+                                                    );
+                                                    //remplacer dans la base de donner par mesNotes[i] là ou titre=mesNotes[i].titre
+                                                    //mais nous avons changer mesNotes[i].isfav qui devient 0(d'esepingler)
+
                                                   } else {
-                                                    print("no");
+                                                    //mesNotes[i].isFa==0 donc le faire passer a 1 pour l'epingler;
+                                                    mesNotes[i] = MiniCont(
+                                                      mesNotes[i].titre,
+                                                      mesNotes[i].note,
+                                                      mesNotes[i].name,
+                                                      mesNotes[i].j,
+                                                      mesNotes[i].m,
+                                                      mesNotes[i].y,
+                                                      mesNotes[i].heure,
+                                                      mesNotes[i].minute,
+                                                      1,
+                                                    );
+                                                    NotesDataBase.instance
+                                                        .updateNote(
+                                                      mesNotes[i],
+                                                    );
                                                   }
                                                 });
                                               }
@@ -313,7 +344,7 @@ class _MyHommeState extends State<MyHomme> {
                               //pour un ajout dans la table note de la bd
                               NotesDataBase.instance.insertNote(
                                 MiniCont(
-                                  m.titre,
+                                  m.titre.toUpperCase(),
                                   m.note,
                                   m.name,
                                   datetoday().day,
