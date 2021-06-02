@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import "package:flutter/material.dart";
 import 'package:flutter/rendering.dart';
-import "dart:math";
+import 'package:flutter_app12/modif.dart';
 import 'package:flutter_app12/notesDatabase.dart';
+import 'package:flutter_app12/voir.dart';
 
 void main(List<String> args) {
   runApp(MyApp());
@@ -27,8 +30,8 @@ class MyHomme extends StatefulWidget {
 }
 
 List colora = [
-  Color.fromRGBO(100, 12, 5, 0.4),
-  Color.fromRGBO(10, 120, 5, 0.4),
+  Color(0xff292d32), //Color.fromRGBO(100, 12, 5, 0.4),
+  Color(0xff292d32), //Color.fromRGBO(10, 120, 5, 0.4),
 ];
 List colorb = [
   Colors.red,
@@ -36,6 +39,18 @@ List colorb = [
 ];
 
 class _MyHommeState extends State<MyHomme> {
+  List<MiniCont> mesNotes = []; //pour gerer l'actualisation
+  List<MiniCont> compteur = []; //pour gerer les id uniques
+  @override
+  void initState() {
+    super.initState();
+    Timer.periodic(Duration(milliseconds: 10), (timer) {
+      setState(() {
+        mesNotes;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +85,7 @@ class _MyHommeState extends State<MyHomme> {
               ),
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Color(0xff292D32),
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(40),
                 ),
@@ -79,7 +94,10 @@ class _MyHommeState extends State<MyHomme> {
                 future: NotesDataBase.instance.notes(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    List mesNotes = snapshot.data;
+                    mesNotes = snapshot.data;
+
+                    compteur = mesNotes;
+
                     return Scrollbar(
                       radius: Radius.circular(30),
                       //juste pour la scrollbar
@@ -92,166 +110,258 @@ class _MyHommeState extends State<MyHomme> {
                           crossAxisSpacing: 20,
                         ),
                         itemBuilder: (BuildContext context, i) {
-                          return Stack(
-                            alignment: Alignment.topRight,
-                            children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width / 2,
-                                height: 200,
-                                decoration: BoxDecoration(
-                                  color: mesNotes[i].isFa == 1
-                                      ? colora[mesNotes[i].isFa]
-                                      : colora[0],
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: double.infinity,
-                                      height: 40,
+                          return Hero(
+                            tag: mesNotes[i].name,
+                            child: Material(
+                              color: Colors.transparent,
+                              child: Stack(
+                                alignment: Alignment.topRight,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) {
+                                          return Voir(
+                                            notes: mesNotes[i],
+                                          );
+                                        }),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width /
+                                          2.5,
+                                      height: 200,
                                       decoration: BoxDecoration(
-                                        color: mesNotes[i].isFa == 1
-                                            ? colorb[mesNotes[i].isFa]
-                                            : colorb[0],
-                                        //si c'est favoris(1)colorb[1]:colorb[0]
-                                        borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(10),
-                                        ),
-                                      ),
-                                      child: Row(
+                                          color: Color.fromRGBO(30, 80, 200, 1),
+                                          // color: Color(0xff292d32),
+                                          //car j'ai mis la mm couleur pr les 2
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.white.withOpacity(0.1),
+                                              // spreadRadius: 2,
+                                              blurRadius: 16,
+                                              offset: Offset(-6, -6),
+                                            ),
+                                            BoxShadow(
+                                              color:
+                                                  Colors.black.withOpacity(1),
+                                              // spreadRadius: 2,
+                                              blurRadius: 16,
+                                              offset: Offset(6, 6),
+                                            ),
+                                          ]),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
                                         children: [
-                                          PopupMenuButton(
-                                            initialValue: 20,
-                                            itemBuilder: (context) {
-                                              return [
-                                                PopupMenuItem(
-                                                  child: Text("supprimer"),
-                                                  value: 0,
-                                                ),
-                                                PopupMenuItem(
-                                                  child: Text(
-                                                    mesNotes[i].isFa == 1
-                                                        ? "désépinglé"
-                                                        : "épingler",
-                                                  ),
-                                                  value: 1,
-                                                ),
-                                              ];
-                                            },
-                                            onSelected: (int value) {
-                                              if (value == 0) {
-                                                setState(() {
-                                                  NotesDataBase.instance
-                                                      .deleteNote(
-                                                    mesNotes[i]
-                                                        .titre
-                                                        .toUpperCase(),
-                                                  );
-                                                });
-                                              }
-                                              if (value == 1) {
-                                                //désepingler ou épingler
-                                                setState(() {
-                                                  if (mesNotes[i].isFa == 1) {
-                                                    mesNotes[i] = MiniCont(
-                                                      mesNotes[i].titre,
-                                                      mesNotes[i].note,
-                                                      mesNotes[i].name,
-                                                      mesNotes[i].j,
-                                                      mesNotes[i].m,
-                                                      mesNotes[i].y,
-                                                      mesNotes[i].heure,
-                                                      mesNotes[i].minute,
-                                                      0,
-                                                      //0 pour désépingler
-                                                    );
-                                                    NotesDataBase.instance
-                                                        .updateNote(
-                                                      mesNotes[i],
-                                                    );
-                                                    //remplacer dans la base de donner par mesNotes[i] là ou titre=mesNotes[i].titre
-                                                    //mais nous avons changer mesNotes[i].isfav qui devient 0(d'esepingler)
+                                          Container(
+                                            width: double.infinity,
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              color: mesNotes[i].isFa == 1
+                                                  ? colorb[mesNotes[i].isFa]
+                                                  : colorb[0],
+                                              //si c'est favoris(1)colorb[1]:colorb[0]
+                                              borderRadius:
+                                                  BorderRadius.vertical(
+                                                top: Radius.circular(10),
+                                              ),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                PopupMenuButton(
+                                                  initialValue: 20,
+                                                  itemBuilder: (context) {
+                                                    return [
+                                                      PopupMenuItem(
+                                                        child:
+                                                            Text("supprimer"),
+                                                        value: 0,
+                                                      ),
+                                                      PopupMenuItem(
+                                                        child: Text(
+                                                          mesNotes[i].isFa == 1
+                                                              ? "désépinglé"
+                                                              : "épingler",
+                                                        ),
+                                                        value: 1,
+                                                      ),
+                                                    ];
+                                                  },
+                                                  onSelected: (int value) {
+                                                    if (value == 0) {
+                                                      setState(() {
+                                                        SnackBar me =
+                                                            new SnackBar(
+                                                          content: Text(
+                                                            "${mesNotes[i].titre} à été supprimer avec succès",
+                                                          ),
+                                                          duration: Duration(
+                                                            milliseconds: 200,
+                                                          ),
+                                                        );
+                                                        Scaffold.of(context)
+                                                            .showSnackBar(me);
+                                                        NotesDataBase.instance
+                                                            .deleteNote(
+                                                          mesNotes[i].id,
+                                                        );
+                                                      });
+                                                    }
+                                                    if (value == 1) {
+                                                      //désepingler ou épingler
+                                                      setState(() {
+                                                        if (mesNotes[i].isFa ==
+                                                            1) {
+                                                          mesNotes[i] =
+                                                              MiniCont(
+                                                            id: mesNotes[i].id,
+                                                            titre: mesNotes[i]
+                                                                .titre,
+                                                            note: mesNotes[i]
+                                                                .note,
+                                                            name: mesNotes[i]
+                                                                .name,
+                                                            j: mesNotes[i].j,
+                                                            m: mesNotes[i].m,
+                                                            y: mesNotes[i].y,
+                                                            heure: mesNotes[i]
+                                                                .heure,
+                                                            minute: mesNotes[i]
+                                                                .minute,
+                                                            isFa: 0,
+                                                            //0 pour désépingler
+                                                          );
+                                                          NotesDataBase.instance
+                                                              .updateNote(
+                                                            mesNotes[i],
+                                                          );
+                                                          //remplacer dans la base de donner par mesNotes[i] là ou titre=mesNotes[i].titre
+                                                          //mais nous avons changer mesNotes[i].isfav qui devient 0(d'esepingler)
 
-                                                  } else {
-                                                    //mesNotes[i].isFa==0 donc le faire passer a 1 pour l'epingler;
-                                                    mesNotes[i] = MiniCont(
-                                                      mesNotes[i].titre,
-                                                      mesNotes[i].note,
-                                                      mesNotes[i].name,
-                                                      mesNotes[i].j,
-                                                      mesNotes[i].m,
-                                                      mesNotes[i].y,
-                                                      mesNotes[i].heure,
-                                                      mesNotes[i].minute,
-                                                      1,
-                                                    );
-                                                    NotesDataBase.instance
-                                                        .updateNote(
-                                                      mesNotes[i],
-                                                    );
-                                                  }
-                                                });
-                                              }
-                                            },
-                                          ),
-                                          //a terminer
-                                          Center(
-                                            child: Text(
-                                              mesNotes[i].titre.toUpperCase(),
-                                              style: TextStyle(
-                                                  color: Colors.white),
+                                                        } else {
+                                                          //mesNotes[i].isFa==0 donc le faire passer a 1 pour l'epingler;
+                                                          mesNotes[i] =
+                                                              MiniCont(
+                                                            id: mesNotes[i].id,
+                                                            titre: mesNotes[i]
+                                                                .titre,
+                                                            note: mesNotes[i]
+                                                                .note,
+                                                            name: mesNotes[i]
+                                                                .name,
+                                                            j: mesNotes[i].j,
+                                                            m: mesNotes[i].m,
+                                                            y: mesNotes[i].y,
+                                                            heure: mesNotes[i]
+                                                                .heure,
+                                                            minute: mesNotes[i]
+                                                                .minute,
+                                                            isFa: 1,
+                                                          );
+                                                          NotesDataBase.instance
+                                                              .updateNote(
+                                                            mesNotes[i],
+                                                          );
+                                                        }
+                                                      });
+                                                    }
+                                                  },
+                                                ),
+                                                //a terminer
+                                                Center(
+                                                  child: Text(
+                                                    mesNotes[i].titre.length >=
+                                                            7
+                                                        ? mesNotes[i]
+                                                            .titreAb
+                                                            .toUpperCase()
+                                                        : mesNotes[i]
+                                                            .titre
+                                                            .toUpperCase(),
+                                                    //pour gerer les abreger si >=7
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
+                                          SizedBox(height: 8),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Text(
+                                                "${mesNotes[i].j}/${mesNotes[i].m}/${mesNotes[i].y}",
+                                                style: TextStyle(
+                                                    fontSize: 10,
+                                                    color: Colors.white),
+                                              ),
+                                              Text(
+                                                "${mesNotes[i].heure}h ${mesNotes[i].minute}",
+                                                style: TextStyle(
+                                                  fontSize: 10,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(height: 8),
+                                          Flexible(
+                                            flex: 2,
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: 10,
+                                                vertical: 5,
+                                              ),
+                                              child: Text(
+                                                mesNotes[i].note,
+                                                style: TextStyle(
+                                                  fontSize: 13,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Flexible(
+                                            flex: 0,
+                                            child: Text(
+                                              mesNotes[i].name.length >= 8
+                                                  ? mesNotes[i].nameAb
+                                                  : mesNotes[i].name,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: mesNotes[i].isFa == 1
+                                                    ? colorb[mesNotes[i].isFa]
+                                                    : colorb[0],
+                                              ),
+                                            ),
+                                          )
                                         ],
                                       ),
                                     ),
-                                    SizedBox(height: 8),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Text(
-                                            "${mesNotes[i].j}/${mesNotes[i].m}/${mesNotes[i].y}",
-                                            style: TextStyle(fontSize: 10)),
-                                        Text(
-                                          "${mesNotes[i].heure}h ${mesNotes[i].minute}",
-                                          style: TextStyle(fontSize: 10),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 8),
-                                    Flexible(
-                                      flex: 2,
-                                      child: SingleChildScrollView(
-                                        child: Container(
-                                          padding: EdgeInsets.all(5),
-                                          child: Text(mesNotes[i].note),
-                                        ),
-                                      ),
-                                    ),
-                                    Flexible(
-                                      flex: 0,
-                                      child: Text(
-                                        mesNotes[i].name,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    )
-                                  ],
-                                ),
+                                  ),
+                                  mesNotes[i].isFa == 1
+                                      ? Positioned(
+                                          top: -1,
+                                          right: -1,
+                                          child: Container(
+                                            child: Image.asset("asset/pin.png"),
+                                            width: 20,
+                                            height: 20,
+                                          ),
+                                        )
+                                      : Container(),
+                                ],
                               ),
-                              mesNotes[i].isFa == 1
-                                  ? Positioned(
-                                      top: -1,
-                                      right: -1,
-                                      child: Container(
-                                        child: Image.asset("asset/pin.png"),
-                                        width: 20,
-                                        height: 20,
-                                      ),
-                                    )
-                                  : Container(),
-                            ],
+                            ),
                           );
                         },
                       ),
@@ -273,7 +383,17 @@ class _MyHommeState extends State<MyHomme> {
         onPressed: () {
           setState(() {
             popupNote(
-              MiniCont('', '', '', 0, 0, 0, 0, 0, 0),
+              MiniCont(
+                titre: "",
+                name: "",
+                j: 0,
+                m: 0,
+                y: 0,
+                heure: 0,
+                minute: 0,
+                isFa: 0,
+                //je ne fais pas passer le nom,titre et notre pour qu'ils soient null
+              ),
             );
           });
         },
@@ -335,7 +455,7 @@ class _MyHommeState extends State<MyHomme> {
                       SizedBox(height: 10),
                       ElevatedButton.icon(
                         onPressed: () {
-                          // print("${m.titre} ${m.note} ${m.name}");
+                          // print("${m.titre} ${m.note} ${m.name} voir");
                           Navigator.pop(context);
                           setState(() {
                             if (m.titre != null &&
@@ -344,15 +464,18 @@ class _MyHommeState extends State<MyHomme> {
                               //pour un ajout dans la table note de la bd
                               NotesDataBase.instance.insertNote(
                                 MiniCont(
-                                  m.titre.toUpperCase(),
-                                  m.note,
-                                  m.name,
-                                  datetoday().day,
-                                  datetoday().month,
-                                  datetoday().year,
-                                  datetoday().hour,
-                                  datetoday().minute,
-                                  0,
+                                  id: compteur.isEmpty
+                                      ? 1
+                                      : (compteur[compteur.length - 1].id) + 1,
+                                  titre: m.titre.toUpperCase(),
+                                  note: m.note,
+                                  name: m.name,
+                                  j: datetoday().day,
+                                  m: datetoday().month,
+                                  y: datetoday().year,
+                                  heure: datetoday().hour,
+                                  minute: datetoday().minute,
+                                  isFa: 0,
                                 ),
                               );
                             }
@@ -379,9 +502,12 @@ class _MyHommeState extends State<MyHomme> {
 }
 
 class MiniCont {
+  int id;
   String titre;
+  String titreAb;
   String note;
   String name;
+  String nameAb;
   // Color a;
   // Color b;
   int j;
@@ -390,8 +516,25 @@ class MiniCont {
   int heure;
   int minute;
   int isFa;
-  MiniCont(String titre, String note, String name, int j, int m, int y,
-      int heure, int minute, int isFa) {
+
+  MiniCont(
+      {int id,
+      String titre,
+      String note,
+      String name,
+      int j,
+      int m,
+      int y,
+      int heure,
+      int minute,
+      int isFa}) {
+    if (titre.length >= 7) {
+      titreAb = titre.substring(0, 7) + "."; //pour abrerger
+    }
+    if (name.length >= 8) {
+      nameAb = name.substring(0, 8) + '.';
+    }
+    this.id = id;
     this.titre = titre;
     this.note = note;
     this.name = name;
@@ -406,7 +549,8 @@ class MiniCont {
   }
 
   Map<String, dynamic> toMap() {
-    return {
+    final map = {
+      "id": id,
       "titre": titre,
       "note": note,
       "name": name,
@@ -417,19 +561,21 @@ class MiniCont {
       "minute": minute,
       "isfa": isFa
     };
+    return map;
   }
 
   factory MiniCont.fromMap(Map<String, dynamic> map) {
     return MiniCont(
-      map["titre"],
-      map["note"],
-      map["name"],
-      map["jour"],
-      map["mois"],
-      map["annee"],
-      map["heure"],
-      map["minute"],
-      map["isfa"],
+      id: map["id"],
+      titre: map["titre"],
+      note: map["note"],
+      name: map["name"],
+      j: map["jour"],
+      m: map["mois"],
+      y: map["annee"],
+      heure: map["heure"],
+      minute: map["minute"],
+      isFa: map["isfa"],
     );
   }
 }
