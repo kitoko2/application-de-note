@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  table_calendar: ^3.0.0
   focused_menu: ^1.0.5
   sqflite: ^2.0.0+3
   path: ^1.8.0
@@ -66,7 +67,7 @@ flutter:
   fonts:
      - family: police1
        fonts:
-         - asset: asset/EaDesignerBold.ttf
+         - asset: asset/police/EaDesignerRegular.ttf 
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
