@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:Poy_note/home.dart';
 import 'package:Poy_note/notesDatabase.dart';
 import "home.dart";
+import "package:date_time_format/date_time_format.dart";
 
 class Modif extends StatefulWidget {
   final MiniCont notes;
@@ -23,6 +24,11 @@ class _ModifState extends State<Modif> {
     newTitre = widget.notes.titre;
     newNote = widget.notes.note;
     newAuteur = widget.notes.name;
+  }
+
+  String datetoday() {
+    DateTime t = DateTime.now();
+    return t.format("j M Y  H:i ");
   }
 
   @override
@@ -66,12 +72,8 @@ class _ModifState extends State<Modif> {
                               id: widget.notes.id,
                               titre: newTitre,
                               note: newNote,
-                              name: newAuteur,
-                              j: widget.notes.j,
-                              m: widget.notes.m,
-                              y: widget.notes.y,
-                              heure: widget.notes.heure,
-                              minute: widget.notes.minute,
+                              name: newAuteur, //pas utiliser ici
+                              dateEnr: datetoday(), //avec la date de la modif
                               isFa: widget.notes.isFa,
                             );
                             NotesDataBase.instance.updateNote(newCont);

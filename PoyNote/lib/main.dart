@@ -35,15 +35,17 @@ class _SplashState extends State<Splash> {
   Widget build(BuildContext context) {
     return SplashScreenView(
       navigateRoute: MyHomme(),
-      duration: 4000,
+      duration: 4100,
       imageSize: 200,
       text: "Poyo Note",
       textType: TextType.ColorizeAnimationText,
       textStyle: TextStyle(
-        fontSize: 18.0,
+        fontSize: 25,
+        fontWeight: FontWeight.bold,
       ),
       colors: [
         Theme.of(context).scaffoldBackgroundColor,
+        Colors.yellow,
         Colors.black,
         Colors.white,
         Colors.teal,

@@ -1,11 +1,12 @@
 import 'dart:async';
+import 'package:Poy_note/drawer/endDrawer.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/rendering.dart';
 import 'package:Poy_note/add.dart';
 import 'package:Poy_note/notesDatabase.dart';
 import 'package:Poy_note/search.dart';
 import 'package:Poy_note/voir.dart';
-import "package:url_launcher/url_launcher.dart";
+import "package:animated_text_kit/animated_text_kit.dart";
 
 class MyHomme extends StatefulWidget {
   @override
@@ -25,17 +26,6 @@ class _MyHommeState extends State<MyHomme> {
   List<MiniCont> mesNotes = []; //pour gerer l'actualisation
   List<MiniCont> compteur = []; //pour gerer les id uniques
 
-  void lauchWhatssap({@required number, @required message}) async {
-    String url = "https://wa.me/$number?text=$message";
-
-    await canLaunch(url) ? launch(url) : print("pas de connection");
-  }
-
-  void lauchTelephone({@required mail, @required message}) async {
-    var url = "mailto:$mail?subject=$message";
-    await canLaunch(url) ? launch("$url") : print("no connection");
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,6 +35,7 @@ class _MyHommeState extends State<MyHomme> {
         elevation: 0,
         toolbarHeight: 10,
       ),
+      endDrawer: Draw(),
       body: Column(
         children: [
           Flexible(
@@ -58,13 +49,17 @@ class _MyHommeState extends State<MyHomme> {
                   children: [
                     Container(
                       width: 240,
-                      child: Text(
-                        'Activités',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 29,
-                          color: Colors.white,
-                        ),
+                      child: AnimatedTextKit(
+                        animatedTexts: [
+                          WavyAnimatedText(
+                            'Activités',
+                            textAlign: TextAlign.center,
+                            textStyle: TextStyle(
+                              fontSize: 29,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     Row(
@@ -72,7 +67,7 @@ class _MyHommeState extends State<MyHomme> {
                         Container(
                           child: IconButton(
                               tooltip:
-                                  "voir le nombre d'element de votre bloc note",
+                                  "voir le nombre d'elements de votre bloc note",
                               icon: Icon(
                                 Icons.search,
                                 size: 30,
@@ -89,113 +84,17 @@ class _MyHommeState extends State<MyHomme> {
                                 );
                               }),
                         ),
-                        IconButton(
-                          tooltip: "info développeur",
-                          icon: Icon(
-                            Icons.info_sharp,
-                            color: Colors.white24,
-                          ),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (c) {
-                                return AlertDialog(
-                                  backgroundColor:
-                                      Color.fromRGBO(30, 80, 200, 0.5),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  title: Text(
-                                    "Information développeur",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  content: Text(
-                                    "@copyright by Josias Ezechiel and Mo_smad\n\nNous contacter : ",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                  actions: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        lauchTelephone(
-                                          mail: "Dogbo804@gmail.com",
-                                          message:
-                                              "a propos de l'appli de note!",
-                                        );
-                                        Navigator.pop(context);
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 30,
-                                          vertical: 10,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              child: Image.asset(
-                                                "asset/gmail.png",
-                                              ),
-                                              width: 25,
-                                              height: 25,
-                                            ),
-                                            SizedBox(width: 10),
-                                            Text(
-                                              'Mail',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 15,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                        lauchWhatssap(
-                                          number: "22543992749",
-                                          message: "hello ezechiel!",
-                                        ); //aller sur whatssap
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 30,
-                                          vertical: 10,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              child:
-                                                  Image.asset("asset/wha1.png"),
-                                              width: 25,
-                                              height: 25,
-                                            ),
-                                            SizedBox(width: 10),
-                                            Text(
-                                              'whatsapp',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 15,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
+                        Builder(
+                          builder: (BuildContext context) {
+                            return IconButton(
+                              tooltip: "Options",
+                              icon: Icon(
+                                Icons.settings,
+                                color: Colors.white70,
+                                size: 32,
+                              ),
+                              onPressed: () {
+                                Scaffold.of(context).openEndDrawer();
                               },
                             );
                           },
@@ -383,14 +282,9 @@ class _MyHommeState extends State<MyHomme> {
                                                                   .note,
                                                               name: mesNotes[i]
                                                                   .name,
-                                                              j: mesNotes[i].j,
-                                                              m: mesNotes[i].m,
-                                                              y: mesNotes[i].y,
-                                                              heure: mesNotes[i]
-                                                                  .heure,
-                                                              minute:
+                                                              dateEnr:
                                                                   mesNotes[i]
-                                                                      .minute,
+                                                                      .dateEnr,
                                                               isFa: 0,
                                                               //0 pour désépingler
                                                             );
@@ -414,14 +308,9 @@ class _MyHommeState extends State<MyHomme> {
                                                                   .note,
                                                               name: mesNotes[i]
                                                                   .name,
-                                                              j: mesNotes[i].j,
-                                                              m: mesNotes[i].m,
-                                                              y: mesNotes[i].y,
-                                                              heure: mesNotes[i]
-                                                                  .heure,
-                                                              minute:
+                                                              dateEnr:
                                                                   mesNotes[i]
-                                                                      .minute,
+                                                                      .dateEnr,
                                                               isFa: 1,
                                                             );
                                                             NotesDataBase
@@ -457,24 +346,12 @@ class _MyHommeState extends State<MyHomme> {
                                               ),
                                             ),
                                             SizedBox(height: 8),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                Text(
-                                                  "${mesNotes[i].j}/${mesNotes[i].m}/${mesNotes[i].y}",
-                                                  style: TextStyle(
-                                                      fontSize: 10,
-                                                      color: Colors.white),
-                                                ),
-                                                Text(
-                                                  "${mesNotes[i].heure}h ${mesNotes[i].minute}",
-                                                  style: TextStyle(
-                                                    fontSize: 10,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ],
+                                            Text(
+                                              "${mesNotes[i].dateEnr}",
+                                              style: TextStyle(
+                                                color: Colors.white60,
+                                                fontSize: 11,
+                                              ),
                                             ),
                                             SizedBox(height: 8),
                                             Flexible(
@@ -487,7 +364,7 @@ class _MyHommeState extends State<MyHomme> {
                                                 child: Text(
                                                   mesNotes[i].note,
                                                   style: TextStyle(
-                                                    fontSize: 13,
+                                                    fontSize: 18,
                                                     color: Colors.white54,
                                                   ),
                                                 ),
@@ -499,13 +376,13 @@ class _MyHommeState extends State<MyHomme> {
                                     ),
                                     mesNotes[i].isFa == 1
                                         ? Positioned(
-                                            top: -1,
-                                            right: -1,
+                                            top: -3,
+                                            right: -3,
                                             child: Container(
                                               child:
                                                   Image.asset("asset/pin.png"),
-                                              width: 20,
-                                              height: 20,
+                                              width: 19,
+                                              height: 19,
                                             ),
                                           )
                                         : Container(),
@@ -568,11 +445,6 @@ class _MyHommeState extends State<MyHomme> {
       });
     });
   }
-
-  DateTime datetoday() {
-    DateTime t = DateTime.now();
-    return t;
-  }
 }
 
 class MiniCont {
@@ -582,11 +454,7 @@ class MiniCont {
   String note;
   String name;
   String nameAb;
-  int j;
-  int m;
-  int y;
-  int heure;
-  int minute;
+  String dateEnr;
   int isFa;
 
   MiniCont(
@@ -594,11 +462,7 @@ class MiniCont {
       String titre,
       String note,
       String name,
-      int j,
-      int m,
-      int y,
-      int heure,
-      int minute,
+      String dateEnr,
       int isFa}) {
     if (titre.length >= 7) {
       titreAb = titre.substring(0, 7) + "."; //pour abrerger
@@ -612,11 +476,7 @@ class MiniCont {
     this.name = name;
     // this.a = a;
     // this.b = b;
-    this.heure = heure;
-    this.minute = minute;
-    this.j = j;
-    this.m = m;
-    this.y = y;
+    this.dateEnr = dateEnr;
     this.isFa = isFa;
   }
 
@@ -626,11 +486,7 @@ class MiniCont {
       "titre": titre,
       "note": note,
       "name": name,
-      "jour": j,
-      "mois": m,
-      "annee": y,
-      "heure": heure,
-      "minute": minute,
+      "dateEnr": dateEnr,
       "isfa": isFa
     };
     return map;
@@ -642,11 +498,7 @@ class MiniCont {
       titre: map["titre"],
       note: map["note"],
       name: map["name"],
-      j: map["jour"],
-      m: map["mois"],
-      y: map["annee"],
-      heure: map["heure"],
-      minute: map["minute"],
+      dateEnr: map["dateEnr"],
       isFa: map["isfa"],
     );
   }

@@ -2,6 +2,7 @@ import 'package:Poy_note/ShowDialog/dialog.dart';
 import "package:flutter/material.dart";
 import 'package:Poy_note/home.dart';
 import 'package:Poy_note/notesDatabase.dart';
+import "package:date_time_format/date_time_format.dart";
 
 class AddNote extends StatefulWidget {
   final List<MiniCont> compteur;
@@ -14,9 +15,9 @@ class _AddNoteState extends State<AddNote> {
   var titre = "";
   var auteur = "";
   var note = "";
-  DateTime datetoday() {
+  String datetoday() {
     DateTime t = DateTime.now();
-    return t;
+    return t.format("j M Y  H:i ");
   }
 
   @override
@@ -89,11 +90,7 @@ class _AddNoteState extends State<AddNote> {
                               titre: titre.toUpperCase(),
                               note: note,
                               name: auteur, //n'est pas utiliser ici
-                              j: datetoday().day,
-                              m: datetoday().month,
-                              y: datetoday().year,
-                              heure: datetoday().hour,
-                              minute: datetoday().minute,
+                              dateEnr: datetoday(), //pour la date d'aujourd'hui
                               isFa: 0,
                             ),
                           );
