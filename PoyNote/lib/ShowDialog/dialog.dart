@@ -6,10 +6,16 @@ runDialog(
     context: context,
     builder: (c) {
       return AlertDialog(
+        backgroundColor: Color.fromRGBO(30, 30, 30, 0.9),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        title: Text(erreur),
+        title: Text(
+          erreur,
+          style: TextStyle(
+            color: Colors.white70,
+          ),
+        ),
         content: Container(
           height: 100,
           child: Column(
@@ -22,7 +28,12 @@ runDialog(
               ),
               SizedBox(height: 10),
               Center(
-                child: Text(message),
+                child: Text(
+                  message,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
               ),
               Center(
                 child: Text(

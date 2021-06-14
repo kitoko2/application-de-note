@@ -156,13 +156,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  o_popup:
+  package_info:
     dependency: "direct main"
     description:
-      name: o_popup
+      name: package_info
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "2.0.2"
   path:
     dependency: "direct main"
     description:

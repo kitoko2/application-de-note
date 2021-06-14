@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:animated_text_kit/animated_text_kit.dart";
 import "package:Poy_note/ShowDialog/dialogContacter.dart";
 import "package:share_plus/share_plus.dart";
+import "package:package_info/package_info.dart";
 
 class Draw extends StatefulWidget {
   @override
@@ -14,26 +15,66 @@ class _DrawState extends State<Draw> {
     return Drawer(
       child: Container(
         color: Theme.of(context).scaffoldBackgroundColor,
-        child: ListView(
+        child: Column(
           children: [
-            DrawerHeader(
-              child: TextLiquidFill(
-                loadDuration: Duration(seconds: 2),
-                waveDuration: Duration(seconds: 1),
-                boxBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                waveColor: Colors.white,
-                text: "Options",
-                textStyle: TextStyle(
-                  fontSize: 30,
-                  color: Colors.white,
-                ),
-                boxHeight: 90,
-                boxWidth: 300,
+            Expanded(
+              child: ListView(
+                children: [
+                  DrawerHeader(
+                    child: TextLiquidFill(
+                      loadDuration: Duration(seconds: 2),
+                      waveDuration: Duration(seconds: 1),
+                      boxBackgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      waveColor: Colors.white,
+                      text: "Options",
+                      textStyle: TextStyle(
+                        fontSize: 30,
+                        color: Colors.white,
+                      ),
+                      boxHeight: 90,
+                      boxWidth: 300,
+                    ),
+                  ),
+                  list(Icons.send_rounded, "send note"),
+                  list(Icons.info_rounded, "info. developpeur"),
+                  list(Icons.share, "Share"),
+                ],
               ),
             ),
-            list(Icons.send_rounded, "send note"),
-            list(Icons.info_rounded, "info. developpeur"),
-            list(Icons.share, "Share"),
+            Container(
+              padding: EdgeInsets.only(bottom: 20),
+              child: FutureBuilder(
+                future: PackageInfo.fromPlatform(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    var resultat = snapshot.data;
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "version : ",
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 17,
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          "${resultat.version}",
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 17,
+                          ),
+                        ),
+                      ],
+                    );
+                  } else {
+                    return Container();
+                  }
+                },
+              ),
+            ),
           ],
         ),
       ),

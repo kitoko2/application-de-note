@@ -21,7 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  o_popup: ^1.0.0
+  package_info: ^2.0.2
   share_plus: ^2.1.2
   animated_text_kit: ^4.2.1
   url_launcher: ^6.0.6

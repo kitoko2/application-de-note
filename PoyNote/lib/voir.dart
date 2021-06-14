@@ -17,6 +17,22 @@ class _VoirState extends State<Voir> {
         toolbarHeight: 10,
         brightness: Brightness.dark,
       ),
+      bottomSheet: BottomSheet(
+        builder: (context) {
+          return Container(
+            color: Color.fromRGBO(30, 30, 30, 1),
+            height: 30,
+            width: double.infinity,
+            child: Center(
+              child: Text(
+                "dernière modification : ${widget.notes.dateEnr}",
+                style: TextStyle(color: Colors.white70),
+              ),
+            ),
+          );
+        },
+        onClosing: () {},
+      ),
       body: Column(
         children: [
           Flexible(

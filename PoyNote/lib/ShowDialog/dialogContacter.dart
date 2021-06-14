@@ -17,7 +17,7 @@ contact(BuildContext context) {
     context: context,
     builder: (c) {
       return AlertDialog(
-        backgroundColor: Color.fromRGBO(30, 80, 200, 0.9),
+        backgroundColor: Color.fromRGBO(30, 30, 30, 0.9),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -30,7 +30,7 @@ contact(BuildContext context) {
           ),
         ),
         content: Text(
-          "@copyright by Josias Ezechiel and Mo_smad\n\nNous contacter : ",
+          "@copyright by Josias Ezechiel\nNous contacter : ",
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.grey,

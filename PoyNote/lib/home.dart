@@ -147,6 +147,7 @@ class _MyHommeState extends State<MyHomme> {
                               itemCount: mesNotes.length,
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
+                                mainAxisExtent: 172,
                                 crossAxisCount:
                                     MediaQuery.of(context).size.width >= 768
                                         ? 4
@@ -177,17 +178,9 @@ class _MyHommeState extends State<MyHomme> {
                                         height: 200,
                                         decoration: BoxDecoration(
                                             color: Color(0xff1f1d2b),
-                                            // color: Color(0xff292d32)
-                                            //car j'ai mis la mm couleur pr les 2
                                             borderRadius:
                                                 BorderRadius.circular(10),
                                             boxShadow: [
-                                              // BoxShadow(
-                                              //   color: Colors.white
-                                              //       .withOpacity(0.1),
-                                              //   blurRadius: 5,
-                                              //   offset: Offset(-3, -3),
-                                              // ),
                                               BoxShadow(
                                                 color:
                                                     Colors.black.withOpacity(1),
@@ -256,16 +249,9 @@ class _MyHommeState extends State<MyHomme> {
                                                         setState(() {
                                                           SnackBar me =
                                                               new SnackBar(
-                                                            content: mesNotes[i]
-                                                                        .titre
-                                                                        .length >=
-                                                                    7
-                                                                ? Text(
-                                                                    "${mesNotes[i].titreAb} à été supprimer avec succès",
-                                                                  )
-                                                                : Text(
-                                                                    "${mesNotes[i].titre} à été supprimer avec succès",
-                                                                  ),
+                                                            content: Text(
+                                                              "votre note à été supprimer avec succès",
+                                                            ),
                                                             duration: Duration(
                                                               milliseconds: 200,
                                                             ),
@@ -342,15 +328,6 @@ class _MyHommeState extends State<MyHomme> {
                                                     child: Center(
                                                       child: Text(
                                                         mesNotes[i].titre,
-                                                        // mesNotes[i]
-                                                        //             .titre
-                                                        //             .length >=
-                                                        //         7
-                                                        //     ? mesNotes[i].titreAb
-                                                        //     // .toUpperCase()
-                                                        //     : mesNotes[i].titre,
-                                                        // .toUpperCase(),
-                                                        //pour gerer les abreger si >=7
                                                         style: TextStyle(
                                                           color: Colors.white,
                                                         ),
@@ -465,10 +442,8 @@ class _MyHommeState extends State<MyHomme> {
 class MiniCont {
   int id;
   String titre;
-  String titreAb;
   String note;
   String name;
-
   String dateEnr;
   int isFa;
 
