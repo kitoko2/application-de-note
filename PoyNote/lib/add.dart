@@ -25,6 +25,8 @@ class _AddNoteState extends State<AddNote> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: new AppBar(
+        brightness:
+            Brightness.dark, //pour la couleur des icons(batteries...) blanche
         toolbarHeight: 10,
       ),
       body: Column(
@@ -47,31 +49,30 @@ class _AddNoteState extends State<AddNote> {
                   ),
                   Center(
                     child: Container(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 10,
-                      ),
                       width: (MediaQuery.of(context).size.width / 2) - 40,
-                      height: 90,
-                      child: TextFormField(
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 29,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        onChanged: (t) {
-                          setState(() {
-                            titre = t;
-                          });
-                        },
-                        cursorHeight: 35,
-                        decoration: InputDecoration(
-                          hintText: "Titre",
-                          hintStyle: TextStyle(
-                            color: Colors.white54,
-                            fontWeight: FontWeight.bold,
+                      height: 95,
+                      child: Center(
+                        child: TextFormField(
+                          style: TextStyle(
+                            color: Colors.white,
                             fontSize: 29,
+                            fontWeight: FontWeight.bold,
                           ),
-                          border: InputBorder.none,
+                          onChanged: (t) {
+                            setState(() {
+                              titre = t;
+                            });
+                          },
+                          cursorHeight: 35,
+                          decoration: InputDecoration(
+                            hintText: "Titre",
+                            hintStyle: TextStyle(
+                              color: Colors.white54,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 29,
+                            ),
+                            border: InputBorder.none,
+                          ),
                         ),
                       ),
                     ),

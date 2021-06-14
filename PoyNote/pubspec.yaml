@@ -21,11 +21,11 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  o_popup: ^1.0.0
+  share_plus: ^2.1.2
   animated_text_kit: ^4.2.1
   url_launcher: ^6.0.6
   splash_screen_view: ^3.0.0
-  table_calendar: ^3.0.0
-  focused_menu: ^1.0.5
   sqflite: ^2.0.0+3
   path: ^1.8.0
   date_time_format: ^2.0.1
@@ -66,6 +66,7 @@ flutter:
      - asset/wha1.png
      - asset/SplashScreen/splashScreen (1).png
      - asset/pin.png
+    
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

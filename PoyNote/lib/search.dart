@@ -57,6 +57,7 @@ class _SearchState extends State<Search> {
       resizeToAvoidBottomInset:
           false, // pour eviter le redimensionnement quand on veut ecrire
       appBar: new AppBar(
+        brightness: Brightness.dark,
         toolbarHeight: 10,
       ),
       body: Column(

@@ -1,10 +1,15 @@
 import 'package:Poy_note/home.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
 
 void main(List<String> args) {
   runApp(MyApp());
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 }
 
 class MyApp extends StatelessWidget {
@@ -44,9 +49,8 @@ class _SplashState extends State<Splash> {
         fontWeight: FontWeight.bold,
       ),
       colors: [
-        Theme.of(context).scaffoldBackgroundColor,
+        Colors.orange,
         Colors.yellow,
-        Colors.black,
         Colors.white,
         Colors.teal,
         Colors.yellow,

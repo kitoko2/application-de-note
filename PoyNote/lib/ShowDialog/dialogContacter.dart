@@ -7,9 +7,9 @@ void lauchWhatssap({@required number, @required message}) async {
   await canLaunch(url) ? launch(url) : print("pas de connection");
 }
 
-void lauchTelephone({@required mail, @required message}) async {
+void lauchMail({@required mail, @required message}) async {
   var url = "mailto:$mail?subject=$message";
-  await canLaunch(url) ? launch("$url") : print("no connection");
+  await canLaunch(url) ? launch("$url") : print("pas de connection");
 }
 
 contact(BuildContext context) {
@@ -38,21 +38,16 @@ contact(BuildContext context) {
           ),
         ),
         actions: [
-          GestureDetector(
-            onTap: () {
-              lauchTelephone(
+          TextButton(
+            onPressed: () {
+              lauchMail(
                 mail: "Dogbo804@gmail.com",
-                message: "a propos de l'appli de note!",
+                message: "A propos de l'appli de note!",
               );
               Navigator.pop(context);
             },
             child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 30,
-                vertical: 10,
-              ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
                     child: Image.asset(
@@ -73,21 +68,16 @@ contact(BuildContext context) {
               ),
             ),
           ),
-          GestureDetector(
-            onTap: () {
+          TextButton(
+            onPressed: () {
               Navigator.pop(context);
               lauchWhatssap(
                 number: "22543992749",
-                message: "hello ezechiel!",
+                message: "hello ezechiel! c'est à propos de l'appli de note",
               ); //aller sur whatssap
             },
             child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 30,
-                vertical: 10,
-              ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
                     child: Image.asset("asset/wha1.png"),

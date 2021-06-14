@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:animated_text_kit/animated_text_kit.dart";
 import "package:Poy_note/ShowDialog/dialogContacter.dart";
+import "package:share_plus/share_plus.dart";
 
 class Draw extends StatefulWidget {
   @override
@@ -18,6 +19,7 @@ class _DrawState extends State<Draw> {
             DrawerHeader(
               child: TextLiquidFill(
                 loadDuration: Duration(seconds: 2),
+                waveDuration: Duration(seconds: 1),
                 boxBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 waveColor: Colors.white,
                 text: "Options",
@@ -29,10 +31,9 @@ class _DrawState extends State<Draw> {
                 boxWidth: 300,
               ),
             ),
-            list(Icons.share, "Share..."),
-            list(Icons.send_rounded, "send note..."),
-            list(Icons.receipt_rounded, "receveid note..."),
+            list(Icons.send_rounded, "send note"),
             list(Icons.info_rounded, "info. developpeur"),
+            list(Icons.share, "Share"),
           ],
         ),
       ),
@@ -41,9 +42,14 @@ class _DrawState extends State<Draw> {
 
   Widget list(IconData icone, String text) {
     return TextButton(
-      onPressed: () {
+      onPressed: () async {
         if (text == "info. developpeur") {
           contact(context);
+        }
+        if (text == "Share") {
+          await Share.share(
+            "https://github.com/kitoko2/application-de-note.git",
+          ); // send ici le liens de mon appli sur les differents stores
         }
       },
       child: Container(
@@ -57,7 +63,7 @@ class _DrawState extends State<Draw> {
               color: Colors.white,
               size: 25,
             ),
-            SizedBox(width: 30),
+            SizedBox(width: 20),
             Text(
               text,
               style: TextStyle(

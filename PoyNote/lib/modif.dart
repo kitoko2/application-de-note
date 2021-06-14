@@ -37,8 +37,7 @@ class _ModifState extends State<Modif> {
       resizeToAvoidBottomInset: false,
       appBar: new AppBar(
         toolbarHeight: 10,
-        elevation: 0,
-        actions: [],
+        brightness: Brightness.dark,
       ),
       body: Column(
         children: [
@@ -113,12 +112,12 @@ class _ModifState extends State<Modif> {
                     children: [
                       TextFormField(
                         maxLines: null,
-
+                        autofocus: true,
                         keyboardType: TextInputType.text,
                         initialValue: "$newNote",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 15,
+                          fontSize: 18,
                         ),
                         cursorHeight: 40,
                         cursorColor: Color.fromRGBO(30, 80, 200, 1),

@@ -7,6 +7,8 @@ import 'package:Poy_note/notesDatabase.dart';
 import 'package:Poy_note/search.dart';
 import 'package:Poy_note/voir.dart';
 import "package:animated_text_kit/animated_text_kit.dart";
+import "package:flutter/services.dart";
+// import "package:o_popup/o_popup.dart"; a voir
 
 class MyHomme extends StatefulWidget {
   @override
@@ -31,6 +33,7 @@ class _MyHommeState extends State<MyHomme> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(30, 80, 200, 1),
       appBar: new AppBar(
+        brightness: Brightness.dark,
         backgroundColor: Color.fromRGBO(30, 80, 200, 1),
         elevation: 0,
         toolbarHeight: 10,
@@ -49,17 +52,17 @@ class _MyHommeState extends State<MyHomme> {
                   children: [
                     Container(
                       width: 240,
-                      child: AnimatedTextKit(
-                        animatedTexts: [
-                          WavyAnimatedText(
-                            'Activités',
-                            textAlign: TextAlign.center,
-                            textStyle: TextStyle(
-                              fontSize: 29,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
+                      child: TextLiquidFill(
+                        waveDuration: Duration(seconds: 1),
+                        loadDuration: Duration(seconds: 5),
+                        boxHeight: 58,
+                        boxBackgroundColor: Theme.of(context).accentColor,
+                        waveColor: Colors.white,
+                        text: "Activités",
+                        textStyle: TextStyle(
+                          fontSize: 29,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                     Row(
@@ -173,12 +176,12 @@ class _MyHommeState extends State<MyHomme> {
                                             borderRadius:
                                                 BorderRadius.circular(10),
                                             boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.white
-                                                    .withOpacity(0.1),
-                                                blurRadius: 5,
-                                                offset: Offset(-3, -3),
-                                              ),
+                                              // BoxShadow(
+                                              //   color: Colors.white
+                                              //       .withOpacity(0.1),
+                                              //   blurRadius: 5,
+                                              //   offset: Offset(-3, -3),
+                                              // ),
                                               BoxShadow(
                                                 color:
                                                     Colors.black.withOpacity(1),
@@ -194,7 +197,9 @@ class _MyHommeState extends State<MyHomme> {
                                               decoration: BoxDecoration(
                                                 color: mesNotes[i].isFa == 1
                                                     ? colorb[mesNotes[i].isFa]
-                                                    : colorb[0],
+                                                        .withOpacity(0.5)
+                                                    : colorb[0]
+                                                        .withOpacity(0.5),
                                                 //si c'est favoris(1)colorb[1]:colorb[0]
                                                 borderRadius:
                                                     BorderRadius.vertical(
@@ -211,6 +216,7 @@ class _MyHommeState extends State<MyHomme> {
                                                               10),
                                                     ),
                                                     color: Color(0xff292D32),
+                                                    iconSize: 21,
                                                     initialValue: 20,
                                                     itemBuilder: (context) {
                                                       return [
@@ -364,8 +370,8 @@ class _MyHommeState extends State<MyHomme> {
                                                 child: Text(
                                                   mesNotes[i].note,
                                                   style: TextStyle(
-                                                    fontSize: 18,
-                                                    color: Colors.white54,
+                                                    fontSize: 15,
+                                                    color: Colors.white70,
                                                   ),
                                                 ),
                                               ),

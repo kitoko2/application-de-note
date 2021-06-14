@@ -14,8 +14,8 @@ class _VoirState extends State<Voir> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        elevation: 0,
         toolbarHeight: 10,
+        brightness: Brightness.dark,
       ),
       body: Column(
         children: [
@@ -104,7 +104,7 @@ class _VoirState extends State<Voir> {
                       Center(
                         child: Text(
                           "${widget.notes.note}",
-                          style: TextStyle(color: Colors.white, fontSize: 15),
+                          style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
                       )
                     ],
