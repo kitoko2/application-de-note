@@ -4,5 +4,5 @@ application de note pour android et ios
 apk disponible dans le ficher PoyNote\build\app\outputs\flutter-apk\app-armeabi-v7a-release.ap
 
 # implementations
-les fonctions dans le enddrawer suivit de "..." n'ont pas ete encore implementé.
+seul la fonction "send note" dans le end drawer n'as pas été implementer.
 
