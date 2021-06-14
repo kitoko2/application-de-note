@@ -41,21 +41,16 @@ class _VoirState extends State<Voir> {
                           },
                         ),
                         SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                widget.notes.titre.length >= 7
-                                    ? '${widget.notes.titreAb}'
-                                    : '${widget.notes.titre}',
-                                // abreger pour que je puisse mettre l'icone modifier
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  color: Colors.white.withOpacity(0.7),
-                                ),
+                          child: Container(
+                            padding: EdgeInsets.only(top: 10),
+                            width: MediaQuery.of(context).size.width - 190,
+                            child: Text(
+                              '${widget.notes.titre}',
+                              style: TextStyle(
+                                fontSize: 25,
+                                color: Colors.white.withOpacity(0.7),
                               ),
-                            ],
+                            ),
                           ),
                         ),
                         IconButton(

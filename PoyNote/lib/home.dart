@@ -115,8 +115,8 @@ class _MyHommeState extends State<MyHomme> {
               padding: EdgeInsets.only(
                 right: 25,
                 left: 25,
-                top: 35,
-                bottom: 20,
+                top: 30,
+                bottom: 10,
               ),
               width: double.infinity,
               decoration: BoxDecoration(
@@ -138,6 +138,12 @@ class _MyHommeState extends State<MyHomme> {
                             radius: Radius.circular(30),
                             //juste pour la scrollbar
                             child: GridView.builder(
+                              padding: EdgeInsets.only(
+                                top: 5,
+                                bottom: 20,
+                                left: 7,
+                                right: 7,
+                              ),
                               itemCount: mesNotes.length,
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
@@ -330,21 +336,24 @@ class _MyHommeState extends State<MyHomme> {
                                                     },
                                                   ),
                                                   //a terminer
-                                                  Center(
-                                                    child: Text(
-                                                      mesNotes[i]
-                                                                  .titre
-                                                                  .length >=
-                                                              7
-                                                          ? mesNotes[i]
-                                                              .titreAb
-                                                              .toUpperCase()
-                                                          : mesNotes[i]
-                                                              .titre
-                                                              .toUpperCase(),
-                                                      //pour gerer les abreger si >=7
-                                                      style: TextStyle(
-                                                        color: Colors.white,
+                                                  Container(
+                                                    width: 50,
+                                                    height: 18,
+                                                    child: Center(
+                                                      child: Text(
+                                                        mesNotes[i].titre,
+                                                        // mesNotes[i]
+                                                        //             .titre
+                                                        //             .length >=
+                                                        //         7
+                                                        //     ? mesNotes[i].titreAb
+                                                        //     // .toUpperCase()
+                                                        //     : mesNotes[i].titre,
+                                                        // .toUpperCase(),
+                                                        //pour gerer les abreger si >=7
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
@@ -459,7 +468,7 @@ class MiniCont {
   String titreAb;
   String note;
   String name;
-  String nameAb;
+
   String dateEnr;
   int isFa;
 
@@ -470,18 +479,10 @@ class MiniCont {
       String name,
       String dateEnr,
       int isFa}) {
-    if (titre.length >= 7) {
-      titreAb = titre.substring(0, 7) + "."; //pour abrerger
-    }
-    if (name.length >= 8) {
-      nameAb = name.substring(0, 8) + '.';
-    } // NB: name(auteur) n'est plus utiliser dans mon appli pour raison d'optimisation
     this.id = id;
     this.titre = titre;
     this.note = note;
     this.name = name;
-    // this.a = a;
-    // this.b = b;
     this.dateEnr = dateEnr;
     this.isFa = isFa;
   }
