@@ -3,13 +3,17 @@ import "package:animated_text_kit/animated_text_kit.dart";
 import "package:Poy_note/ShowDialog/dialogContacter.dart";
 import "package:share_plus/share_plus.dart";
 import "package:package_info/package_info.dart";
+import "package:shared_preferences/shared_preferences.dart";
 
 class Draw extends StatefulWidget {
+  final bool langVal;
+  Draw(this.langVal);
   @override
   _DrawState createState() => _DrawState();
 }
 
 class _DrawState extends State<Draw> {
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -36,9 +40,61 @@ class _DrawState extends State<Draw> {
                       boxWidth: 300,
                     ),
                   ),
-                  list(Icons.send_rounded, "send note"),
-                  list(Icons.info_rounded, "info. developpeur"),
-                  list(Icons.share, "Share"),
+                  list(
+                    Icons.info_rounded,
+                    widget.langVal ? "info. developpeur" : "developer info",
+                  ),
+                  list(
+                    Icons.share,
+                    widget.langVal ? "Partager" : "Share",
+                  ),
+                  list(
+                    Icons.note,
+                    widget.langVal ? "Prise en main" : "Getting started",
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        widget.langVal ? "langue :" : "language :",
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 17,
+                        ),
+                      ),
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                            Color.fromRGBO(20, 20, 20, 1),
+                          ),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _prefs.then((SharedPreferences prefs) {
+                              prefs.setBool("isFrench", true);
+                            }); //met en francais
+                          });
+                        },
+                        child: Text(widget.langVal ? "francais" : "french"),
+                      ),
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                            Color.fromRGBO(20, 20, 20, 1),
+                          ),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _prefs.then((SharedPreferences prefs) {
+                              prefs.setBool("isFrench", false);
+                            }); //met en anglais
+                          });
+                        },
+                        child: Text(widget.langVal ? "anglais" : "english"),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -83,14 +139,17 @@ class _DrawState extends State<Draw> {
 
   Widget list(IconData icone, String text) {
     return TextButton(
-      onPressed: () async {
-        if (text == "info. developpeur") {
+      onPressed: () {
+        if (text == "info. developpeur" || text == "developer info") {
           contact(context);
         }
-        if (text == "Share") {
-          await Share.share(
+        if (text == "Share" || text == "Partager") {
+          Share.share(
             "https://github.com/kitoko2/application-de-note.git",
           ); // send ici le liens de mon appli sur les differents stores
+        }
+        if (text == "Prise en main" || text == "Getting started") {
+          //prise en main
         }
       },
       child: Container(

@@ -4,7 +4,8 @@ import 'package:Poy_note/modif.dart';
 
 class Voir extends StatefulWidget {
   final MiniCont notes;
-  Voir({this.notes});
+  final bool langVal;
+  Voir({this.notes, this.langVal});
   @override
   _VoirState createState() => _VoirState();
 }
@@ -25,7 +26,9 @@ class _VoirState extends State<Voir> {
             width: double.infinity,
             child: Center(
               child: Text(
-                "dernière modification : ${widget.notes.dateEnr}",
+                widget.langVal
+                    ? "dernière modification : ${widget.notes.dateEnr}"
+                    : "Last modification : ${widget.notes.dateEnr}",
                 style: TextStyle(color: Colors.white70),
               ),
             ),
@@ -82,6 +85,7 @@ class _VoirState extends State<Voir> {
                                 builder: (context) {
                                   return Modif(
                                     notes: widget.notes,
+                                    langVal: widget.langVal,
                                   );
                                 },
                               ),

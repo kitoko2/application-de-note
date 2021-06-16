@@ -8,8 +8,9 @@ import "package:date_time_format/date_time_format.dart";
 
 class Modif extends StatefulWidget {
   final MiniCont notes;
+  final bool langVal;
 
-  Modif({this.notes});
+  Modif({this.notes, this.langVal});
 
   @override
   _ModifState createState() => _ModifState();
@@ -59,13 +60,34 @@ class _ModifState extends State<Modif> {
                         Navigator.pop(context);
                       },
                     ),
-                    Text(
-                      'Modification',
-                      style: TextStyle(fontSize: 28, color: Colors.white),
+                    SingleChildScrollView(
+                      child: Container(
+                        padding: EdgeInsets.only(top: 10),
+                        width: MediaQuery.of(context).size.width - 190,
+                        child: TextFormField(
+                          initialValue: newTitre,
+                          autofocus: true,
+                          style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.white.withOpacity(0.7),
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                          ),
+                          onChanged: (n) {
+                            setState(() {
+                              newTitre = n;
+                            });
+                          },
+                        ),
+                      ),
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        if (newNote.isNotEmpty && newNote != null) {
+                        if (newNote.isNotEmpty &&
+                            newNote != null &&
+                            newTitre.isNotEmpty &&
+                            newTitre != null) {
                           setState(() {
                             MiniCont newCont = MiniCont(
                               id: widget.notes.id,
@@ -82,13 +104,19 @@ class _ModifState extends State<Modif> {
                         } else {
                           runDialog(
                             context,
-                            "Erreur d'enregistrement",
-                            "Notes Vide",
-                            "veiller entrer une note",
+                            widget.langVal
+                                ? "Erreur d'enregistrement"
+                                : "Registration error",
+                            widget.langVal
+                                ? "Champ Requis Vide"
+                                : "Required Field Empty",
+                            widget.langVal
+                                ? "veiller entrer le titre et la note"
+                                : "make sure you enter the title and the note",
                           );
                         }
                       },
-                      child: Text("Enregistrer"),
+                      child: Text(widget.langVal ? "Enregistrer" : "save"),
                     ),
                   ],
                 ),

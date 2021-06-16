@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  shared_preferences: ^2.0.6
   package_info: ^2.0.2
   share_plus: ^2.1.2
   animated_text_kit: ^4.2.1

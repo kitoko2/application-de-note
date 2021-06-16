@@ -6,7 +6,8 @@ import "package:date_time_format/date_time_format.dart";
 
 class AddNote extends StatefulWidget {
   final List<MiniCont> compteur;
-  AddNote({this.compteur});
+  final bool langVal;
+  AddNote({this.compteur, this.langVal});
   @override
   _AddNoteState createState() => _AddNoteState();
 }
@@ -65,11 +66,13 @@ class _AddNoteState extends State<AddNote> {
                           },
                           cursorHeight: 35,
                           decoration: InputDecoration(
-                            hintText: "Titre",
+                            hintText: widget.langVal
+                                ? "Entrer titre..."
+                                : "Enter title...",
                             hintStyle: TextStyle(
                               color: Colors.white54,
                               fontWeight: FontWeight.bold,
-                              fontSize: 29,
+                              fontSize: 19,
                             ),
                             border: InputBorder.none,
                           ),
@@ -100,50 +103,20 @@ class _AddNoteState extends State<AddNote> {
                       } else {
                         runDialog(
                           context,
-                          "Erreur d'enregistrement",
-                          "Champ Requis Vide",
-                          "veiller entrer le titre et la note",
+                          widget.langVal
+                              ? "Erreur d'enregistrement"
+                              : "Registration error",
+                          widget.langVal
+                              ? "Champ Requis Vide"
+                              : "Required Field Empty",
+                          widget.langVal
+                              ? "veiller entrer le titre et la note"
+                              : "make sure you enter the title and the note",
                         );
-                        // showDialog(
-                        //   context: context,
-                        //   builder: (c) {
-                        //     return AlertDialog(
-                        //       shape: RoundedRectangleBorder(
-                        //         borderRadius: BorderRadius.circular(10),
-                        //       ),
-                        //       title: Text("Erreur d'enregistrement"),
-                        //       content: Container(
-                        //         height: 100,
-                        //         child: Column(
-                        //           crossAxisAlignment: CrossAxisAlignment.center,
-                        //           children: [
-                        //             Icon(
-                        //               Icons.warning,
-                        //               size: 30,
-                        //               color: Colors.red,
-                        //             ),
-                        //             SizedBox(height: 10),
-                        //             Center(
-                        //               child: Text("Champ Requis Vide"),
-                        //             ),
-                        //             Center(
-                        //               child: Text(
-                        //                 "veiller entrer le titre et la note",
-                        //                 style: TextStyle(
-                        //                   color: Colors.red,
-                        //                   fontSize: 10,
-                        //                 ),
-                        //               ),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       ),
-                        //     );
-                        //   },
-                        // );
+                        //pour anglais et francais
                       }
                     },
-                    child: Text("Enregistrer"),
+                    child: Text(widget.langVal ? "Enregistrer" : "save"),
                   ),
                 ],
               ),
@@ -179,7 +152,9 @@ class _AddNoteState extends State<AddNote> {
                           });
                         },
                         decoration: InputDecoration(
-                          hintText: "Entrez votre note ...",
+                          hintText: widget.langVal
+                              ? "Entrer votre note ..."
+                              : "Enter note ...",
                           hintStyle: TextStyle(
                             color: Colors.white54,
                             fontSize: 19,
