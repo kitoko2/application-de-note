@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:Poy_note/authentification.dart';
 import 'package:Poy_note/drawer/endDrawer.dart';
 import 'package:Poy_note/search.dart';
 import "package:flutter/material.dart";
@@ -30,7 +31,7 @@ class _MyHommeState extends State<MyHomme> {
 
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   Future<bool> isFrench;
-  bool langVal;
+  bool langVal = true; //par defaut francais
 
   @override
   void initState() {
@@ -54,7 +55,6 @@ class _MyHommeState extends State<MyHomme> {
 
   @override
   Widget build(BuildContext context) {
-    // print(langVal);
     return Scaffold(
       backgroundColor: Color.fromRGBO(30, 80, 200, 1),
       appBar: new AppBar(
@@ -94,45 +94,50 @@ class _MyHommeState extends State<MyHomme> {
                               ),
                             ),
                           ),
-                          Row(
-                            children: [
-                              Container(
-                                child: IconButton(
-                                    tooltip: langVal
-                                        ? "voir le nombre d'elements de votre bloc note"
-                                        : "see the number of elements in your notepad",
-                                    icon: Icon(
-                                      Icons.search,
-                                      size: 30,
-                                      color: Colors.grey,
-                                    ),
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) {
-                                            return Search(mesNotes: mesNotes);
-                                          },
-                                        ),
-                                      );
-                                    }),
-                              ),
-                              Builder(
-                                builder: (BuildContext context) {
-                                  return IconButton(
-                                    tooltip: "Options",
-                                    icon: Icon(
-                                      Icons.settings,
-                                      color: Colors.white70,
-                                      size: 32,
-                                    ),
-                                    onPressed: () {
-                                      Scaffold.of(context).openEndDrawer();
-                                    },
-                                  );
-                                },
-                              ),
-                            ],
+                          Expanded(
+                            child: Row(
+                              children: [
+                                IconButton(
+                                  tooltip: langVal
+                                      ? "voir le nombre d'elements de votre bloc note"
+                                      : "see the number of elements in your notepad",
+                                  icon: Icon(
+                                    Icons.search,
+                                    size: 30,
+                                    color: Colors.grey,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return Authentification();
+                                          // return Search(
+                                          //   mesNotes: mesNotes,
+                                          //   langVal: langVal,
+                                          // );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                ),
+                                Builder(
+                                  builder: (BuildContext context) {
+                                    return IconButton(
+                                      tooltip: "Options",
+                                      icon: Icon(
+                                        Icons.settings,
+                                        color: Colors.white70,
+                                        size: 32,
+                                      ),
+                                      onPressed: () {
+                                        Scaffold.of(context).openEndDrawer();
+                                      },
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -310,7 +315,8 @@ class _MyHommeState extends State<MyHomme> {
                                                                         200,
                                                                   ),
                                                                 );
-                                                                Scaffold.of(
+
+                                                                ScaffoldMessenger.of(
                                                                         context)
                                                                     .showSnackBar(
                                                                         me);

@@ -19,9 +19,12 @@ class _VoirState extends State<Voir> {
         brightness: Brightness.dark,
       ),
       bottomSheet: BottomSheet(
+        backgroundColor: Color.fromRGBO(30, 30, 30, 1),
         builder: (context) {
           return Container(
-            color: Color.fromRGBO(30, 30, 30, 1),
+            margin: EdgeInsets.only(
+              bottom: 18,
+            ),
             height: 30,
             width: double.infinity,
             child: Center(

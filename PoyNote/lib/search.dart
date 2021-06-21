@@ -3,7 +3,8 @@ import 'package:Poy_note/home.dart';
 
 class Search extends StatefulWidget {
   final List<MiniCont> mesNotes;
-  Search({this.mesNotes});
+  final bool langVal;
+  Search({this.mesNotes, this.langVal});
   @override
   _SearchState createState() => _SearchState();
 }
@@ -81,7 +82,7 @@ class _SearchState extends State<Search> {
                   ),
                   Center(
                     child: Text(
-                      "Search :",
+                      widget.langVal ? "Recherche" : "Search :",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 29,
@@ -90,7 +91,9 @@ class _SearchState extends State<Search> {
                     ),
                   ),
                   Text(
-                    "vous avez ${searchResult()} éléments",
+                    widget.langVal
+                        ? "vous avez ${searchResult()} éléments"
+                        : "you have ${searchResult()} items",
                     style: TextStyle(
                       fontSize: 10,
                       color: Colors.white54,
@@ -112,11 +115,14 @@ class _SearchState extends State<Search> {
               ),
             ),
             child: TextFormField(
+              autofocus: true,
               textAlign: TextAlign.center,
               controller: _editingController,
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                hintText: "entrer le titre a rechercher",
+                hintText: widget.langVal
+                    ? "entrer le titre a rechercher"
+                    : "enter the title to search",
                 hintStyle: TextStyle(
                   color: Colors.white12,
                   fontSize: 15,
@@ -136,8 +142,12 @@ class _SearchState extends State<Search> {
               ),
               child: Text(
                 searchResult() != 0
-                    ? 'vous avez ${searchResult()} éléments Contenant "${_editingController.text}"'
-                    : 'No found element',
+                    ? widget.langVal
+                        ? 'vous avez ${searchResult()} éléments Contenant "${_editingController.text}"'
+                        : 'you have ${searchResult()} elements containing "${_editingController.text}"'
+                    : widget.langVal
+                        ? 'aucun élement trouvé'
+                        : 'No found element',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 20,

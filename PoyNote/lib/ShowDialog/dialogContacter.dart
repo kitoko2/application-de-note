@@ -12,7 +12,7 @@ void lauchMail({@required mail, @required message}) async {
   await canLaunch(url) ? launch("$url") : print("pas de connection");
 }
 
-contact(BuildContext context) {
+contact(BuildContext context, bool langVal) {
   showDialog(
     context: context,
     builder: (c) {
@@ -22,7 +22,7 @@ contact(BuildContext context) {
           borderRadius: BorderRadius.circular(10),
         ),
         title: Text(
-          "Information développeur",
+          langVal ? "Information développeur" : "Developer information",
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
@@ -30,7 +30,9 @@ contact(BuildContext context) {
           ),
         ),
         content: Text(
-          "@copyright by Josias Ezechiel\nNous contacter : ",
+          langVal
+              ? "@copyright by Josias Ezechiel\nNous contacter : "
+              : "@copyright by Josias Ezechiel\nContact us : ",
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.grey,
@@ -58,7 +60,7 @@ contact(BuildContext context) {
                   ),
                   SizedBox(width: 10),
                   Text(
-                    'Mail',
+                    'Gmail',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 15,
@@ -73,7 +75,7 @@ contact(BuildContext context) {
               Navigator.pop(context);
               lauchWhatssap(
                 number: "22543992749",
-                message: "hello ezechiel! c'est à propos de l'appli de note",
+                message: "Salut ezechiel! c'est à propos de l'appli de note",
               ); //aller sur whatssap
             },
             child: Container(

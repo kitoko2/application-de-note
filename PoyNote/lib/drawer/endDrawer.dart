@@ -1,3 +1,4 @@
+import 'package:Poy_note/description/endDrawerDescription.dart';
 import "package:flutter/material.dart";
 import "package:animated_text_kit/animated_text_kit.dart";
 import "package:Poy_note/ShowDialog/dialogContacter.dart";
@@ -14,6 +15,15 @@ class Draw extends StatefulWidget {
 
 class _DrawState extends State<Draw> {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  bool secure;
+  @override
+  void initState() {
+    super.initState();
+    _prefs.then((SharedPreferences prefs) {
+      secure = prefs.getBool("isSecure");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -52,7 +62,7 @@ class _DrawState extends State<Draw> {
                     Icons.note,
                     widget.langVal ? "Prise en main" : "Getting started",
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -66,7 +76,10 @@ class _DrawState extends State<Draw> {
                       ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
-                            Color.fromRGBO(20, 20, 20, 1),
+                            widget.langVal
+                                ? Theme.of(context).accentColor
+                                : Color.fromRGBO(20, 20, 20, 1),
+                            //si langVal =true(francais) alors Colors.blue sinon c'est anglais(qui est selectionner)
                           ),
                         ),
                         onPressed: () {
@@ -81,7 +94,10 @@ class _DrawState extends State<Draw> {
                       ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
-                            Color.fromRGBO(20, 20, 20, 1),
+                            widget.langVal
+                                ? Color.fromRGBO(20, 20, 20, 1)
+                                : Theme.of(context).accentColor,
+                            //si widget.langVal=false (anglais selectionner) donc le button anglais deviens bleu
                           ),
                         ),
                         onPressed: () {
@@ -94,6 +110,49 @@ class _DrawState extends State<Draw> {
                         child: Text(widget.langVal ? "anglais" : "english"),
                       ),
                     ],
+                  ),
+                  SizedBox(height: 20),
+                  Container(
+                    height: 48,
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    margin: EdgeInsets.only(bottom: 5),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.security,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                        SizedBox(width: 15),
+                        Text(
+                          widget.langVal
+                              ? "Securité avec empreinte"
+                              : "Security with imprint",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 13,
+                          ),
+                        ),
+                        SizedBox(width: 15),
+                        Switch(
+                          value: secure,
+                          onChanged: (bool b) {
+                            setState(() {
+                              secure = b;
+                              if (secure == true) {
+                                _prefs.then((SharedPreferences prefs) {
+                                  prefs.setBool("isSecure", true);
+                                });
+                              } else {
+                                _prefs.then((SharedPreferences prefs) {
+                                  prefs.setBool("isSecure", false);
+                                });
+                              }
+                            });
+                          },
+                        )
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -141,7 +200,7 @@ class _DrawState extends State<Draw> {
     return TextButton(
       onPressed: () {
         if (text == "info. developpeur" || text == "developer info") {
-          contact(context);
+          contact(context, widget.langVal);
         }
         if (text == "Share" || text == "Partager") {
           Share.share(
@@ -149,7 +208,12 @@ class _DrawState extends State<Draw> {
           ); // send ici le liens de mon appli sur les differents stores
         }
         if (text == "Prise en main" || text == "Getting started") {
-          //prise en main
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (BuildContext context) {
+              return PriseEnMain(widget.langVal);
+            }),
+          );
         }
       },
       child: Container(

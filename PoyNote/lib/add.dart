@@ -54,6 +54,7 @@ class _AddNoteState extends State<AddNote> {
                       height: 95,
                       child: Center(
                         child: TextFormField(
+                          autofocus: true,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 29,
