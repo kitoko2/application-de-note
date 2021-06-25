@@ -23,12 +23,13 @@ class _AddNoteState extends State<AddNote> {
 
   @override
   Widget build(BuildContext context) {
+    Size largeur = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: new AppBar(
         brightness:
             Brightness.dark, //pour la couleur des icons(batteries...) blanche
-        toolbarHeight: 10,
+        toolbarHeight: largeur.width <= 320 ? 0 : 10,
       ),
       body: Column(
         children: [

@@ -17,6 +17,7 @@ samples, guidance on mobile development, and a full API reference.
 
 # plugin local auth
 
+sur android:
 J'ai changer le MainActivity.Kt
 
 package com.example.flutter_app12
@@ -31,6 +32,10 @@ class MainActivity: FlutterFragmentActivity() {
         GeneratedPluginRegistrant.registerWith(flutterEngine);
     }
 }
+
+sur ios add :
+<key>NSFaceIDUsageDescription</key>
+<string>Why is my app authenticating using face id?</string>
 
 
 Puis j'ais changer le style.xml

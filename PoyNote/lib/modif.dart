@@ -34,10 +34,11 @@ class _ModifState extends State<Modif> {
 
   @override
   Widget build(BuildContext context) {
+    Size largeur = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: new AppBar(
-        toolbarHeight: 10,
+        toolbarHeight: largeur.width <= 320 ? 0 : 10,
         brightness: Brightness.dark,
       ),
       body: Column(
@@ -62,7 +63,8 @@ class _ModifState extends State<Modif> {
                     ),
                     SingleChildScrollView(
                       child: Container(
-                        padding: EdgeInsets.only(top: 10),
+                        padding:
+                            EdgeInsets.only(top: largeur.width <= 320 ? 0 : 10),
                         width: MediaQuery.of(context).size.width - 190,
                         child: TextFormField(
                           initialValue: newTitre,

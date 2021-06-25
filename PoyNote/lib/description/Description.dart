@@ -40,10 +40,10 @@ class _DescriptionState extends State<Description> {
                       children: [
                         Container(
                           width: double.infinity,
-                          height: MediaQuery.of(context).size.height / 2,
+                          height: MediaQuery.of(context).size.height / 2.3,
                           margin: EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 20,
+                            horizontal: 30,
+                            vertical: 35,
                           ),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
@@ -56,7 +56,7 @@ class _DescriptionState extends State<Description> {
                         SizedBox(height: 30),
                         Container(
                           padding: EdgeInsets.symmetric(
-                            horizontal: 10,
+                            horizontal: 30,
                           ),
                           width: double.infinity,
                           child: Column(
@@ -82,10 +82,10 @@ class _DescriptionState extends State<Description> {
                       children: [
                         Container(
                           width: double.infinity,
-                          height: MediaQuery.of(context).size.height / 2,
+                          height: MediaQuery.of(context).size.height / 2.3,
                           margin: EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 20,
+                            horizontal: 30,
+                            vertical: 35,
                           ),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
@@ -98,7 +98,7 @@ class _DescriptionState extends State<Description> {
                         SizedBox(height: 30),
                         Container(
                           padding: EdgeInsets.symmetric(
-                            horizontal: 10,
+                            horizontal: 30,
                           ),
                           width: double.infinity,
                           child: Column(

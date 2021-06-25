@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:Poy_note/authentification.dart';
 import 'package:Poy_note/drawer/endDrawer.dart';
 import 'package:Poy_note/search.dart';
 import "package:flutter/material.dart";
@@ -55,10 +54,11 @@ class _MyHommeState extends State<MyHomme> {
 
   @override
   Widget build(BuildContext context) {
+    Size largeur = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Color.fromRGBO(30, 80, 200, 1),
       appBar: new AppBar(
-        brightness: Brightness.dark,
+        brightness: Brightness.dark, //pour voir les icones du haut du telephone
         backgroundColor: Color.fromRGBO(30, 80, 200, 1),
         elevation: 0,
         toolbarHeight: 10,
@@ -80,64 +80,67 @@ class _MyHommeState extends State<MyHomme> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            width: 240,
-                            child: TextLiquidFill(
-                              waveDuration: Duration(seconds: 1),
-                              loadDuration: Duration(seconds: 5),
-                              boxHeight: 58,
-                              boxBackgroundColor: Theme.of(context).accentColor,
-                              waveColor: Colors.white,
-                              text: langVal ? "Activités" : "activities",
-                              textStyle: TextStyle(
-                                fontSize: 29,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Row(
-                              children: [
-                                IconButton(
-                                  tooltip: langVal
-                                      ? "voir le nombre d'elements de votre bloc note"
-                                      : "see the number of elements in your notepad",
-                                  icon: Icon(
-                                    Icons.search,
-                                    size: 30,
-                                    color: Colors.grey,
+                            width: largeur.width <= 320 ? 160 : 230,
+                            child: largeur.width <= 320
+                                ? Text(
+                                    langVal ? "Activités" : "activities",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 25,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : TextLiquidFill(
+                                    waveDuration: Duration(seconds: 1),
+                                    loadDuration: Duration(seconds: 5),
+                                    boxHeight: 58,
+                                    boxBackgroundColor:
+                                        Theme.of(context).accentColor,
+                                    waveColor: Colors.white,
+                                    text: langVal ? "Activités" : "activities",
+                                    textStyle: TextStyle(
+                                      fontSize: 29,
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          return Authentification();
-                                          // return Search(
-                                          //   mesNotes: mesNotes,
-                                          //   langVal: langVal,
-                                          // );
-                                        },
-                                      ),
-                                    );
-                                  },
+                          ),
+                          Row(
+                            children: [
+                              IconButton(
+                                tooltip: langVal
+                                    ? "voir le nombre d'elements de votre bloc note"
+                                    : "see the number of elements in your notepad",
+                                icon: Icon(
+                                  Icons.search,
+                                  size: largeur.width <= 320 ? 20 : 30,
+                                  color: Colors.grey,
                                 ),
-                                Builder(
-                                  builder: (BuildContext context) {
-                                    return IconButton(
-                                      tooltip: "Options",
-                                      icon: Icon(
-                                        Icons.settings,
-                                        color: Colors.white70,
-                                        size: 32,
-                                      ),
-                                      onPressed: () {
-                                        Scaffold.of(context).openEndDrawer();
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return Search(
+                                          mesNotes: mesNotes,
+                                          langVal: langVal,
+                                        );
                                       },
-                                    );
-                                  },
+                                    ),
+                                  );
+                                },
+                              ),
+                              IconButton(
+                                tooltip: "Options",
+                                icon: Icon(
+                                  Icons.settings,
+                                  color: Colors.white70,
+                                  size: largeur.width <= 320 ? 20 : 30,
                                 ),
-                              ],
-                            ),
+                                onPressed: () {
+                                  Scaffold.of(context).openEndDrawer();
+                                },
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -183,7 +186,8 @@ class _MyHommeState extends State<MyHomme> {
                                     itemCount: mesNotes.length,
                                     gridDelegate:
                                         SliverGridDelegateWithFixedCrossAxisCount(
-                                      mainAxisExtent: 172,
+                                      mainAxisExtent:
+                                          largeur.width <= 320 ? 130 : 172,
                                       crossAxisCount:
                                           MediaQuery.of(context).size.width >=
                                                   768
@@ -193,10 +197,12 @@ class _MyHommeState extends State<MyHomme> {
                                       crossAxisSpacing: 20,
                                     ),
                                     itemBuilder: (BuildContext context, i) {
-                                      return Stack(
-                                        alignment: Alignment.topRight,
-                                        children: [
-                                          GestureDetector(
+                                      return Hero(
+                                        tag: "hero $i",
+                                        child: Material(
+                                          color: Theme.of(context)
+                                              .scaffoldBackgroundColor,
+                                          child: GestureDetector(
                                             onTap: () {
                                               Navigator.push(
                                                 context,
@@ -205,6 +211,7 @@ class _MyHommeState extends State<MyHomme> {
                                                   return Voir(
                                                     notes: mesNotes[i],
                                                     langVal: langVal,
+                                                    indexTag: i,
                                                   );
                                                 }),
                                               );
@@ -440,19 +447,7 @@ class _MyHommeState extends State<MyHomme> {
                                               ),
                                             ),
                                           ),
-                                          mesNotes[i].isFa == 1
-                                              ? Positioned(
-                                                  top: -3,
-                                                  right: -3,
-                                                  child: Container(
-                                                    child: Image.asset(
-                                                        "asset/pin.png"),
-                                                    width: 19,
-                                                    height: 19,
-                                                  ),
-                                                )
-                                              : Container(),
-                                        ],
+                                        ),
                                       );
                                     },
                                   ),

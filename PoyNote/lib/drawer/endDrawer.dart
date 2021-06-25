@@ -1,7 +1,11 @@
+import 'package:Poy_note/ShowDialog/dialogEmpreinte.dart';
 import 'package:Poy_note/description/endDrawerDescription.dart';
 import "package:flutter/material.dart";
 import "package:animated_text_kit/animated_text_kit.dart";
 import "package:Poy_note/ShowDialog/dialogContacter.dart";
+import 'package:flutter/services.dart';
+import 'package:local_auth/auth_strings.dart';
+import 'package:local_auth/local_auth.dart';
 import "package:share_plus/share_plus.dart";
 import "package:package_info/package_info.dart";
 import "package:shared_preferences/shared_preferences.dart";
@@ -15,13 +19,23 @@ class Draw extends StatefulWidget {
 
 class _DrawState extends State<Draw> {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  LocalAuthentication auth = LocalAuthentication();
   bool secure;
+  bool secureExist = false;
+  bool exeption = false;
+
+  Future<void> verif() async {
+    secureExist = await auth.canCheckBiometrics;
+  }
+
   @override
   void initState() {
     super.initState();
     _prefs.then((SharedPreferences prefs) {
-      secure = prefs.getBool("isSecure");
+      secure = prefs.getBool("isSecure") ?? false;
     });
+
+    verif();
   }
 
   @override
@@ -112,48 +126,121 @@ class _DrawState extends State<Draw> {
                     ],
                   ),
                   SizedBox(height: 20),
-                  Container(
-                    height: 48,
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    margin: EdgeInsets.only(bottom: 5),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.security,
-                          color: Colors.white,
-                          size: 20,
-                        ),
-                        SizedBox(width: 15),
-                        Text(
-                          widget.langVal
-                              ? "Securité avec empreinte"
-                              : "Security with imprint",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 13,
+                  secureExist
+                      ? Container(
+                          height: 48,
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          margin: EdgeInsets.only(bottom: 5),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.security,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                              SizedBox(width: 15),
+                              Text(
+                                widget.langVal
+                                    ? "Securité avec empreinte"
+                                    : "Security with imprint",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 13,
+                                ),
+                              ),
+                              SizedBox(width: 15),
+                              Switch(
+                                value: secure,
+                                onChanged: (bool b) async {
+                                  try {
+                                    bool s;
+                                    s = await auth.authenticate(
+                                      biometricOnly: true,
+                                      androidAuthStrings: AndroidAuthMessages(
+                                        biometricHint: "",
+                                        signInTitle: "Empreinte",
+                                      ),
+                                      localizedReason:
+                                          "Verifier votre identité avant modification",
+                                    );
+                                    if (s) {
+                                      setState(() {
+                                        secure = b;
+                                        _prefs.then((SharedPreferences prefs) {
+                                          prefs.setBool("isSecure", secure);
+                                        });
+                                      });
+                                    } //on peut m1tenant modifier si l'utilisateur est verifier
+
+                                  } on PlatformException catch (e) {
+                                    print(e);
+
+                                    if (e.message ==
+                                        "No biometrics enrolled on this device.") {
+                                      setState(() {
+                                        secure = false;
+                                        _prefs.then((SharedPreferences prefs) {
+                                          prefs.setBool("isSecure", secure);
+                                        });
+                                      });
+                                      dialogEmmpreinte(
+                                        context,
+                                        "aller dans parametre ajouter une empreinte digitale",
+                                      );
+                                    }
+                                    if (e.message ==
+                                        "Required security features not enabled") {
+                                      setState(() {
+                                        secure = false;
+                                        _prefs.then((SharedPreferences prefs) {
+                                          prefs.setBool("isSecure", secure);
+                                        });
+                                      }); //desactivé la securité(si elle était la)
+                                      dialogEmmpreinte(
+                                        context,
+                                        "Aucune securité est active sur l'appareil",
+                                      );
+                                    } // si il n'y as pas de securité ou pas d'empreinte entregistre
+                                    if (e.code == "LockedOut" ||
+                                        e.code == "PermanentlyLockedOut") {
+                                      return showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return SimpleDialog(
+                                            backgroundColor: Theme.of(context)
+                                                .scaffoldBackgroundColor,
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                              horizontal: 15,
+                                              vertical: 20,
+                                            ),
+                                            children: [
+                                              Container(
+                                                width: 60,
+                                                height: 60,
+                                                child: Image.asset(
+                                                  "asset/errorEmpreinte.png",
+                                                ),
+                                              ),
+                                              Text(
+                                                "Empreinte désactivé Réessayer plus tard",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  color: Colors.red,
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
+                                  }
+                                },
+                              )
+                            ],
                           ),
-                        ),
-                        SizedBox(width: 15),
-                        Switch(
-                          value: secure,
-                          onChanged: (bool b) {
-                            setState(() {
-                              secure = b;
-                              if (secure == true) {
-                                _prefs.then((SharedPreferences prefs) {
-                                  prefs.setBool("isSecure", true);
-                                });
-                              } else {
-                                _prefs.then((SharedPreferences prefs) {
-                                  prefs.setBool("isSecure", false);
-                                });
-                              }
-                            });
-                          },
                         )
-                      ],
-                    ),
-                  ),
+                      : Container(),
                 ],
               ),
             ),

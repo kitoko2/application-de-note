@@ -50,6 +50,7 @@ class _SearchState extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
+    Size largeur = MediaQuery.of(context).size;
     if (resultList.isEmpty) {
       resultList = widget.mesNotes;
     }
@@ -59,7 +60,7 @@ class _SearchState extends State<Search> {
           false, // pour eviter le redimensionnement quand on veut ecrire
       appBar: new AppBar(
         brightness: Brightness.dark,
-        toolbarHeight: 10,
+        toolbarHeight: largeur.width <= 360 ? 0 : 10,
       ),
       body: Column(
         children: [
@@ -85,7 +86,7 @@ class _SearchState extends State<Search> {
                       widget.langVal ? "Recherche" : "Search :",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 29,
+                        fontSize: largeur.width <= 320 ? 25 : 29,
                         color: Colors.white,
                       ),
                     ),
