@@ -6,8 +6,12 @@ apk disponible dans le ficher PoyNote\build\app\outputs\flutter-apk\app-armeabi-
 # implementations
 
 nouvelle fonctionnalitées anglais/francais ajoutés.
+
 possibilité de modifier un titre.
+
 possibilité de securiser ces notes avec empreinte digital(en cour d'amelioration).
+
+pouvoir partager ces notes a tous le monde sur tous les réseaux et par sms(à venir)
 
 # plugin local auth
 
