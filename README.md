@@ -4,11 +4,10 @@ application de note pour android et ios
 apk disponible dans le ficher PoyNote\build\app\outputs\flutter-apk\app-armeabi-v7a-release.ap
 
 # implementations
-seul la fonction "Prise en main" dans le end drawer n'as pas été implementer.
 
 nouvelle fonctionnalitées anglais/francais ajoutés.
 possibilité de modifier un titre.
-possibilité de securiser ces notes avec empreinte digital.
+possibilité de securiser ces notes avec empreinte digital(en cour d'amelioration).
 
 # plugin local auth
 
